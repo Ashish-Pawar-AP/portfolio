@@ -1,0 +1,26 @@
+{
+  "name": "ashish_portfolio",
+  "version": "1.0.0",
+  "description": "Personal Portfolio",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "npm run dev --prefix server",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ashish-Pawar-AP/portfolio.git"
+  },
+  "author": "Ashish Pawar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ashish-Pawar-AP/portfolio/issues"
+  },
+  "homepage": "https://github.com/Ashish-Pawar-AP/portfolio#readme",
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

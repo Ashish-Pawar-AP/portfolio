@@ -1,19 +1,19 @@
 import axios from "axios";
 
-const baseURL = "https://ashishportfoliobackend.vercel.app"
+// const baseURL = "https://ashish-pawar-portfolio.vercel.app/"
 
-// const api = axios.create({
-//   baseURL: import.meta.env.VITE_API_URL,
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-// });
 const api = axios.create({
-  baseURL: `${baseURL}/api`,
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
+// const api = axios.create({
+//   baseURL: `${baseURL}/api`,
+//   headers: {
+//     "Content-Type": "application/json",
+//   },
+// });
 
 /**
  * RESPONSE INTERCEPTOR

@@ -4,6 +4,7 @@ dotenv.config();
 
 export const env = {
   port: process.env.PORT || 5000,
+  corsOrigin:process.env.CORS_ORIGIN,
   mongoUri: process.env.MONGO_URI,
   nodeEnv: process.env.NODE_ENV,
   jwtSecret: process.env.JWT_SECRET,
@@ -15,5 +16,4 @@ export const env = {
   cloudinaryName: process.env.CLOUDINARY_CLOUD_NAME,
   cloudinaryKey: process.env.CLOUDINARY_API_KEY,
   cloudinarySecret: process.env.CLOUDINARY_API_SECRET,
-  openAi: process.env.OPENAI_API_KEY,
 };

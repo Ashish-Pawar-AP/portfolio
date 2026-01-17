@@ -9,8 +9,8 @@ const app = express();
 
 /* Security */
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
+  windowMs: 15 * 60 * 10000,
+  max: 500,
 });
 
 // basic configurations
@@ -21,11 +21,20 @@ app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(limiter);
 
+const allowedOrigins = env.corsOrigin
+  ? env.corsOrigin.split(",")
+  : ["http://localhost:5173"];
+
 // Cors configurations
 app.use(
   cors({
-    origin:
-      process.env.CORS_ORIGIN?.split(",") || "http://localhost:5173" || "*",
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Authorization", "Content-Type"],

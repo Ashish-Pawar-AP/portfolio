@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { getBlogBySlug } from "../../api/blog.api";
 import useSEO from "../../hooks/useSEO";
 import ReactMarkdown from "react-markdown";
@@ -18,12 +18,7 @@ const BlogDetails = () => {
     queryFn: () => getBlogBySlug(slug),
   });
 
-  // AI Explain Mutation
-  const mutation = useMutation({
-    mutationFn: explainWithAI,
-  });
-
-  // SEO (always called safely)
+  // SEO (safe even when blog is undefined initially)
   useSEO({
     title: blog?.title || "Blog",
     description: blog?.excerpt || "",

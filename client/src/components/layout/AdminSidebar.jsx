@@ -1,6 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { clearAuth } from "../../store/auth.store";
 
 /**
  * Admin Sidebar (Advanced UI + Animations)
@@ -9,7 +8,6 @@ const AdminSidebar = () => {
   const navigate = useNavigate();
 
   const logout = () => {
-    clearAuth();
     navigate("/login");
   };
 
@@ -18,9 +16,9 @@ const AdminSidebar = () => {
     { name: "Projects", path: "/admin/projects" },
     { name: "Skills", path: "/admin/skills" },
     { name: "Messages", path: "/admin/messages" },
-    { name: "Analytics", path: "/admin/analytics" },
     { name: "Profile", path: "/admin/profile" },
     { name: "Blogs", path: "/admin/blogs" },
+    { name: "Resume", path: "/admin/resume" },
   ];
 
   return (

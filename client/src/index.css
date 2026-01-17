@@ -1,23 +1,2 @@
 @import "tailwindcss";
 
-
-/* CSS VARIABLES */
-/* @layer base {
-  :root {
-    --bg: 255 255 255;
-    --text: 17 24 39;
-    --card: 255 255 255;
-    --border: 229 231 235;
-  } */
-
-  /* .dark {
-    --bg: 17 24 39;
-    --text: 243 244 246;
-    --card: 31 41 55;
-    --border: 55 65 81;
-  } */
-/* 
-  body {
-    @apply bg-[rgb(var(--bg))] text-[rgb(var(--text))] transition-colors duration-300;
-  }
-} */

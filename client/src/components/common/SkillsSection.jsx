@@ -47,6 +47,7 @@ const SkillsSection = ({ skills }) => {
           className="
             relative
             rounded-3xl
+            overflow-hidden
             border border-slate-200 dark:border-slate-800
             bg-white/70 dark:bg-slate-900/60
             backdrop-blur-xl

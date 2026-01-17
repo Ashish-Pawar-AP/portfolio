@@ -2,7 +2,6 @@ import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { getProjectById } from "../../api/project.api";
-import { explainWithAI } from "../../api/ai.api";
 import useSEO from "../../hooks/useSEO";
 
 const container = {
@@ -24,10 +23,6 @@ const fadeUp = {
 
 const ProjectDetails = () => {
   const { id } = useParams();
-
-  const explainMutation = useMutation({
-    mutationFn: explainWithAI,
-  });
 
   const { data: project, isLoading } = useQuery({
     queryKey: ["project", id],
@@ -112,52 +107,6 @@ const ProjectDetails = () => {
           </motion.div>
         ))}
 
-        {/* AI EXPLAINER */}
-        <motion.div variants={fadeUp} className="space-y-4">
-          <h2 className="text-xl font-semibold">AI Explanation</h2>
-
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.96 }}
-            disabled={explainMutation.isPending}
-            onClick={() =>
-              explainMutation.mutate(`
-                Project: ${project.title}
-                Tech Stack: ${project.techStack.join(", ")}
-                Description: ${project.detailedDescription}
-              `)
-            }
-            className="
-              rounded-xl px-7 py-3
-              bg-linear-to-r from-blue-600 to-purple-600
-              text-white font-medium
-              shadow-lg shadow-blue-500/30
-              disabled:opacity-60
-            "
-          >
-            {explainMutation.isPending
-              ? "Explaining with AI..."
-              : "Explain Project with AI"}
-          </motion.button>
-
-          {explainMutation.data && (
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="
-                rounded-xl
-                border border-slate-200 dark:border-slate-800
-                bg-white/80 dark:bg-slate-900/70
-                p-6
-                backdrop-blur
-              "
-            >
-              <p className="text-slate-700 dark:text-slate-300">
-                {explainMutation.data.result}
-              </p>
-            </motion.div>
-          )}
-        </motion.div>
 
         {/* LINKS */}
         <motion.div variants={fadeUp} className="flex flex-wrap gap-4">

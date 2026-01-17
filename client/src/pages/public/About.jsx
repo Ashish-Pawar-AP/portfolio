@@ -5,7 +5,7 @@ import { getSkills } from "../../api/skill.api";
 import SkillsSection from "../../components/common/SkillsSection";
 import Timeline from "../../components/common/Timeline";
 import useSEO from "../../hooks/useSEO";
-import SkillsSkeleton from "../../components/skeletons/SkillsSkeleton";
+import AboutSkeleton from "../../components/skeletons/AboutSkeleton";
 
 /**
  * About Page (Advanced UI + Animations)
@@ -27,7 +27,7 @@ const About = () => {
     queryFn: getSkills,
   });
   if (isLoading) {
-  return <SkillsSkeleton />;
+  return <AboutSkeleton />;
 }
 
   return (

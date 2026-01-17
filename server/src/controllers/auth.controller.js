@@ -1,124 +1,170 @@
 import bcrypt from "bcryptjs";
 import User from "../models/User.model.js";
-import {
-  generateAccessToken,
-  generateRefreshToken
-} from "../utils/token.js";
+import { env } from "../config/env.js";
+import { ApiError } from "../utils/api-error.js";
+import { asyncHandler } from "../utils/async-handler.js";
+import { ApiResponse } from "../utils/api-response.js";
+
+const generateAccessAndRefreshTokens = async (userId) => {
+  try {
+    const user = await User.findById(userId);
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
+
+    user.refreshToken = refreshToken;
+    await user.save({ validateBeforeSave: false });
+    return { accessToken, refreshToken };
+  } catch (error) {
+    throw new ApiError(
+      500,
+      "Something went wrong while generating access token",
+    );
+  }
+};
 
 /**
  * One-time Admin Registration
  * Allowed ONLY if no admin exists
  */
-export const registerAdmin = async (req, res) => {
-  try {
-    const adminExists = await User.findOne();
-
-    // Prevent multiple admins
-    if (adminExists) {
-      return res
-        .status(403)
-        .json({ message: "Admin already exists" });
-    }
-
-    const { name, email, password } = req.body;
-
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: "All fields required" });
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const admin = await User.create({
-      name,
-      email,
-      password: hashedPassword
-    });
-
-    res.status(201).json({
-      message: "Admin registered successfully",
-      admin: {
-        id: admin._id,
-        email: admin.email
-      }
-    });
-  } catch (error) {
-    console.error("Register Error:", error);
-    res.status(500).json({ message: "Server error" });
+export const registerAdmin = asyncHandler(async (req, res) => {
+  const adminExists = await User.findOne();
+  if (adminExists) {
+    throw new ApiError(402, "Admin is already exists");
   }
-};
 
-/**
- * Admin Login
- */
-export const loginAdmin = async (req, res) => {
-  try {
-    const { email, password } = req.body;
+  const { name, email, password } = req.body;
 
-    const user = await User.findOne({ email }).select("+password");
-    if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    user.lastLogin = new Date();
-    await user.save();
-
-    res.json({
-      message: "Login successful",
-      accessToken: generateAccessToken(user._id),
-      refreshToken: generateRefreshToken(user._id)
-    });
-  } catch (error) {
-    console.error("Login Error:", error);
-    res.status(500).json({ message: "Server error" });
+  if (!name || !email || !password) {
+    throw new ApiError(402, "All fields are required");
   }
-};
 
-/**
- * Admin Logout
- * (Client removes tokens — backend confirms)
- */
-export const logoutAdmin = async (req, res) => {
-  res.json({
-    message: "Logged out successfully"
+  const user = await User.create({
+    name,
+    email,
+    password,
+    role: "admin", // 🔥 IMPORTANT
   });
-};
+
+  await user.save({ validateBeforeSave: false });
+
+  const createdUser = await User.findById(user._id).select(
+    "-password -refreshToken -emailVerificationToken -emailVerificationExpiry",
+  );
+
+  if (!createdUser) {
+    throw new ApiError(500, "Something went wrong while registring a user");
+  }
+
+  return res
+    .status(201)
+    .json(
+      new ApiResponse(
+        200,
+        { user: createdUser },
+        "User registered successfully and verification email has been sent on your email",
+      ),
+    );
+});
+
+/**
+ * Admin Login (COOKIE BASED)
+ */
+export const loginAdmin = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+  if (!email) {
+    throw new ApiError(400, " email is required");
+  }
+
+  const user = await User.findOne({ email }).select("+password");
+  if (!user) {
+    throw new ApiError(400, "User does not exists");
+  }
+
+  const isPasswordValid = await user.isPasswordCorrect(password);
+  if (!isPasswordValid) {
+    throw new ApiError(400, "Invalid credentials");
+  }
+
+  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
+    user._id,
+  );
+
+  const loggedInUser = await User.findById(user._id).select(
+    "-password -refreshToken -emailVerificationToken -emailVerificationExpiry",
+  );
+
+  user.lastLogin = new Date();
+  await user.save();
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, options)
+    .json(
+      new ApiResponse(
+        200,
+        {
+          user: loggedInUser,
+          accessToken,
+          refreshToken,
+        },
+        "User logged in successfully",
+      ),
+    );
+});
+
+/**
+ Admin Logout
+ **/
+export const logoutAdmin = asyncHandler(async (req, res) => {
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        refreshToken: "",
+      },
+    },
+    {
+      new: true,
+    },
+  );
+
+  const options = {
+    httpOnly: true,
+    secure: true,
+  };
+
+  return res
+    .status(200)
+    .clearCookie("accessToken", options)
+    .clearCookie("refreshToken", options)
+    .json(new ApiResponse(200, {}, "User Logged Out"));
+});
 
 /**
  * Change Admin Password
  * Protected Route
  */
-export const changePassword = async (req, res) => {
-  try {
-    const { currentPassword, newPassword } = req.body;
+export const changePassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
 
-    if (!currentPassword || !newPassword) {
-      return res.status(400).json({ message: "All fields required" });
-    }
+  const user = await User.findOne(req.user?._id);
 
-    const admin = await User.findById(req.adminId).select("+password");
+  const isPasswordValid = await user.isPasswordCorrect(oldPassword);
 
-    const isMatch = await bcrypt.compare(
-      currentPassword,
-      admin.password
-    );
-
-    if (!isMatch) {
-      return res
-        .status(401)
-        .json({ message: "Current password incorrect" });
-    }
-
-    admin.password = await bcrypt.hash(newPassword, 10);
-    await admin.save();
-
-    res.json({ message: "Password updated successfully" });
-  } catch (error) {
-    console.error("Change Password Error:", error);
-    res.status(500).json({ message: "Server error" });
+  if (!isPasswordValid) {
+    throw new ApiError(400, "Invalid old password");
   }
-};
+
+  user.password = newPassword;
+  await user.save({ validateBeforeSave: false });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Password changed successfully"));
+});

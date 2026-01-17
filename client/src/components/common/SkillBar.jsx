@@ -2,12 +2,14 @@ import { motion } from "framer-motion";
 
 /**
  * Skill Bar (Compact + Animated)
- * - Smaller height & text
+ * - Percentage based
  * - Smooth fill animation
- * - Gradient glow on hover
  */
 const SkillBar = ({ skill, compact = true }) => {
-  const percent = (skill.level / 5) * 100;
+  // Convert 1–5 scale → percentage
+  const percent = Math.round(
+    Math.min(Math.max((skill.level / 5) * 100, 0), 100),
+  );
 
   return (
     <motion.div
@@ -27,10 +29,11 @@ const SkillBar = ({ skill, compact = true }) => {
           {skill.name}
         </span>
 
+        {/* Percentage */}
         <span
           className={`text-slate-500 ${compact ? "text-[10px]" : "text-xs"}`}
         >
-          {skill.level}/5
+          {percent}%
         </span>
       </div>
 

@@ -32,7 +32,7 @@ const AppLoader = () => {
         <div className="
           h-12 w-12
           rounded-full
-          bg-gradient-to-r
+          bg-linear-to-r
           from-blue-500
           to-purple-600
           animate-pulse

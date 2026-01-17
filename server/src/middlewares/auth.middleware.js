@@ -1,26 +1,33 @@
 import jwt from "jsonwebtoken";
 import { env } from "../config/env.js";
+import User from "../models/User.model.js";
+import { ApiError } from "../utils/api-error.js";
+import { asyncHandler } from "../utils/async-handler.js";
 
 /**
- * Protect Admin Routes
+ * Protect Admin Routes (COOKIE BASED)
  */
-export const protectAdmin = (req, res, next) => {
+export const protectAdmin = asyncHandler(async (req, res, next) => {
+  const token =
+    req.cookies?.accessToken ||
+    req.header("Authorization")?.replace("Bearer", "");
+
+  if (!token) {
+    throw new ApiError(401, "Unauthorized request");
+  }
+
   try {
-    const authHeader = req.headers.authorization;
+    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    const user = await User.findById(decodedToken?._id).select(
+      "-password -refreshToken -emailVerificationToken -emailVerificationExpiry",
+    );
 
-    // Check token presence
-    if (!authHeader || !authHeader.startsWith("Bearer")) {
-      return res.status(401).json({ message: "Unauthorized" });
+    if (!user) {
+      throw new ApiError(401, "Invalid access token");
     }
-
-    const token = authHeader.split(" ")[1];
-
-    // Verify token
-    const decoded = jwt.verify(token, env.jwtSecret);
-
-    req.adminId = decoded.id;
+    req.user = user;
     next();
   } catch (error) {
-    return res.status(401).json({ message: "Token invalid or expired" });
+    throw new ApiError(401, "Invalid access token");
   }
-};
+});

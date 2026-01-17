@@ -12,12 +12,11 @@ import ProjectsAdmin from "../pages/admin/ProjectsAdmin";
 import SkillsAdmin from "../pages/admin/SkillsAdmin";
 import ProfileAdmin from "../pages/admin/ProfileAdmin";
 import MessagesAdmin from "../pages/admin/MessagesAdmin";
-import AnalyticsAdmin from "../pages/admin/AnalyticsAdmin";
 import Blogs from "../pages/public/Blogs";
 import BlogDetails from "../pages/public/BlogDetails";
 import BlogsAdmin from "../pages/admin/BlogsAdmin";
-import ResumeAI from "../pages/public/ResumeAI";
 import NotFound from "../pages/public/NotFound";
+import ResumeAdmin from "../pages/admin/ResumeAdmin";
 
 export const router = createBrowserRouter([
   {
@@ -32,7 +31,6 @@ export const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "blog", element: <Blogs /> },
       { path: "blog/:slug", element: <BlogDetails /> },
-      { path: "resume-ai", element: <ResumeAI /> },
       {
         path: "*",
         element: <NotFound />,
@@ -48,8 +46,8 @@ export const router = createBrowserRouter([
       { path: "skills", element: <SkillsAdmin /> },
       { path: "profile", element: <ProfileAdmin /> },
       { path: "messages", element: <MessagesAdmin /> },
-      { path: "analytics", element: <AnalyticsAdmin /> },
       { path: "blogs", element: <BlogsAdmin /> },
+      { path: "resume", element: <ResumeAdmin /> },
     ],
   },
 ]);

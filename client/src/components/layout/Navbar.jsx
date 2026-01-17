@@ -13,7 +13,6 @@ const NAV_LINKS = [
 const SIDEBAR_LINKS = [
   { name: "Projects", path: "/projects" },
   { name: "Blog", path: "/blog" },
-  { name: "Resume AI", path: "/resume-ai" },
   { name: "Admin", path: "/login" },
 ];
 

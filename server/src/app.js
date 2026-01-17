@@ -24,7 +24,7 @@ app.use(limiter);
 // Cors configurations
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN?.split(",") || "http://localhost:5173" || "*",
+    origin: "*",
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Authorization", "Content-Type"],
@@ -48,7 +48,6 @@ app.use("/api/projects", projectRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/blogs", blogRoutes);
-
 
 /* Health Check */
 app.get("/", (req, res) => {

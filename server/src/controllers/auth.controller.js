@@ -99,6 +99,8 @@ export const loginAdmin = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    sameSite: "none",
+    path: "/",
   };
 
   return res
@@ -137,6 +139,8 @@ export const logoutAdmin = asyncHandler(async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    sameSite: "none",
+    path: "/",
   };
 
   return res

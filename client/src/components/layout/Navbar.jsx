@@ -16,6 +16,9 @@ const SIDEBAR_LINKS = [
   { name: "Admin", path: "/login" },
 ];
 
+/* Combine all links for mobile */
+const MOBILE_LINKS = [...NAV_LINKS, ...SIDEBAR_LINKS];
+
 /* Animations */
 const sidebarVariants = {
   hidden: { x: "100%" },
@@ -162,6 +165,60 @@ const Navbar = () => {
                 ))}
               </nav>
             </motion.aside>
+            
+            {/* MOBILE SIDEBAR */}
+      <AnimatePresence>
+        {open && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setOpen(false)}
+              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
+            />
+
+            {/* Sidebar */}
+            <motion.aside
+              variants={sidebarVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="
+                fixed right-0 top-0 z-50 h-full w-full sm:w-80
+                bg-white dark:bg-slate-900
+                border-l border-slate-200 dark:border-slate-800
+                p-8 md:hidden
+              "
+            >
+              <nav className="mt-16 space-y-6 text-lg font-medium">
+                {MOBILE_LINKS.map((link, i) => (
+                  <motion.div
+                    key={link.path}
+                    custom={i}
+                    variants={linkVariants}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    <NavLink
+                      to={link.path}
+                      onClick={() => setOpen(false)}
+                      className={({ isActive }) =>
+                        isActive
+                          ? "block text-blue-600"
+                          : "block text-slate-700 dark:text-slate-300 hover:text-blue-600"
+                      }
+                    >
+                      {link.name}
+                    </NavLink>
+                  </motion.div>
+                ))}
+              </nav>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
           </>
         )}
       </AnimatePresence>

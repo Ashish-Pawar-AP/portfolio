@@ -14,7 +14,7 @@ const Footer = () => {
         
         {/* Brand */}
         <h2 className="text-lg font-semibold">
-          <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
             Ashish.dev
           </span>
         </h2>
@@ -55,7 +55,7 @@ const Footer = () => {
         </div>
 
         {/* Divider */}
-        <div className="mt-8 h-px w-full bg-gradient-to-r from-transparent via-gray-300 dark:via-slate-700 to-transparent" />
+        <div className="mt-8 h-px w-full bg-linear-to-r from-transparent via-gray-300 dark:via-slate-700 to-transparent" />
 
         {/* Copyright */}
         <p className="mt-6 text-xs text-gray-500 dark:text-gray-400">

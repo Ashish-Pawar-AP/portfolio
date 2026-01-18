@@ -7,7 +7,7 @@ const Timeline = () => {
   const items = [
     {
       title: "Application Support Engineer (Intern)",
-      period: "July 2025 – Oct 2025",
+      period: "July 2025 – Present",
       description:
         "Worked on production issue analysis, SQL queries, system monitoring, and application troubleshooting.",
     },

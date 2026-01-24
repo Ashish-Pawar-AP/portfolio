@@ -53,12 +53,14 @@ const Home = () => {
       <motion.div
         animate={{ scale: [1, 1.1, 1] }}
         transition={{ duration: 8, repeat: Infinity }}
-        className="absolute -top-40 -left-40 h-130 w-130 rounded-full bg-blue-500/20 blur-[140px]"
+        className="absolute -top-40 -left-40 h-130 w-130 rounded-full bg-blue-500/20 blur-[120px] md:blur-[140px]
+"
       />
       <motion.div
         animate={{ scale: [1, 1.15, 1] }}
         transition={{ duration: 10, repeat: Infinity }}
-        className="absolute top-1/3 -right-40 h-130 w-130 rounded-full bg-purple-500/20 blur-[140px]"
+        className="absolute top-1/3 -right-40 h-130 w-130 rounded-full bg-purple-500/20 blur-[120px] md:blur-[140px]
+"
       />
 
       <div className="relative mx-auto max-w-6xl px-8 py-28">
@@ -74,17 +76,22 @@ const Home = () => {
               variants={fadeUp}
               className="text-3xl font-bold leading-tight md:text-5xl"
             >
-              Hi, I’m{" Ashish Pawar"}
+              Hi, I’m{" "}
               <span className="bg-linear-to-r from-blue-500 via-cyan-400 to-purple-600 bg-clip-text text-transparent">
                 {profile.fullName}
+              </span>
+              <br />
+              <span className="text-slate-800 dark:text-slate-200 text-xl md:text-2xl font-medium">
+                Full Stack MERN Developer
               </span>
             </motion.h1>
 
             <motion.p
               variants={fadeUp}
-              className="text-xl text-slate-700 dark:text-slate-300"
+              className="text-xl font-medium text-slate-700 dark:text-slate-300"
             >
-              {profile.tagline}
+              {profile.tagline ||
+                "I build scalable, production-ready web applications using MERN stack."}
             </motion.p>
 
             <motion.p
@@ -112,11 +119,11 @@ const Home = () => {
                 <span className="absolute inset-0 bg-white/10 opacity-0 transition-opacity hover:opacity-100" />
               </motion.a>
 
-              {profile.resumeUrl && (
+              {
                 <motion.a
                   whileHover={{ scale: 1.06 }}
                   whileTap={{ scale: 0.96 }}
-                  href={profile.resumeUrl}
+                  href={"/Ashish_CV.pdf"}
                   target="_blank"
                   rel="noreferrer"
                   className="
@@ -131,7 +138,7 @@ const Home = () => {
                 >
                   Download Resume
                 </motion.a>
-              )}
+              }
             </motion.div>
           </div>
 
@@ -151,14 +158,11 @@ const Home = () => {
             <div className="space-y-6">
               <div className="h-2 w-16 rounded-full bg-linear-to-r from-blue-500 to-purple-600" />
 
-              <h3 className="text-2xl font-semibold">
-                Building real-world products
-              </h3>
+              <h3 className="text-2xl font-semibold">What I Do Best</h3>
 
               <p className="text-slate-600 dark:text-slate-400">
-                I focus on writing clean, scalable code and building
-                production-ready full-stack applications using modern
-                technologies.
+                I design and build full-stack applications with clean
+                architecture, secure authentication, and scalable APIs.
               </p>
 
               <div className="flex flex-wrap gap-3 text-sm">

@@ -2,6 +2,9 @@ import { useState } from "react";
 import { uploadResume } from "../../api/admin.resume.api";
 import { motion } from "framer-motion";
 
+/**
+ * Admin Resume Upload (Theme-Based + Premium UI)
+ */
 const ResumeAdmin = () => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -21,11 +24,11 @@ const ResumeAdmin = () => {
       setLoading(true);
       setMessage("");
       await uploadResume(formData);
-      setMessage("✅ Resume uploaded successfully");
+      setMessage("Resume uploaded successfully");
       setFile(null);
     } catch (err) {
       setMessage(
-        err.response?.data?.message || "❌ Upload failed"
+        err.response?.data?.message || "Upload failed"
       );
     } finally {
       setLoading(false);
@@ -36,29 +39,69 @@ const ResumeAdmin = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="max-w-xl mx-auto bg-white dark:bg-slate-900 p-6 rounded-xl shadow"
+      className="max-w-xl mx-auto rounded-3xl p-8 backdrop-blur-2xl shadow-xl"
+      style={{
+        backgroundColor: "rgba(var(--bg-secondary),0.7)",
+        border: "1px solid rgb(var(--border-color))",
+      }}
     >
-      <h2 className="text-xl font-bold mb-4">
+      <h2
+        className="text-xl font-bold mb-6"
+        style={{ color: "rgb(var(--text-primary))" }}
+      >
         Upload Resume (PDF)
       </h2>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="file"
-          accept="application/pdf"
-          onChange={(e) => setFile(e.target.files[0])}
-          className="block w-full text-sm"
-        />
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* File Input */}
+        <div>
+          <label
+            className="block text-sm font-medium mb-2"
+            style={{ color: "rgb(var(--text-secondary))" }}
+          >
+            Select PDF File
+          </label>
 
-        <button
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={(e) => setFile(e.target.files[0])}
+            className="w-full rounded-xl px-4 py-3 outline-none transition"
+            style={{
+              backgroundColor: "rgba(var(--bg-secondary),0.9)",
+              border: "1px solid rgb(var(--border-color))",
+              color: "rgb(var(--text-primary))",
+            }}
+          />
+        </div>
+
+        {/* Submit Button */}
+        <motion.button
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
           disabled={loading}
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg disabled:opacity-50"
+          type="submit"
+          className="w-full rounded-xl py-3 font-medium text-white disabled:opacity-50"
+          style={{
+            background:
+              "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+          }}
         >
           {loading ? "Uploading..." : "Upload Resume"}
-        </button>
+        </motion.button>
 
+        {/* Message */}
         {message && (
-          <p className="text-sm text-center">{message}</p>
+          <p
+            className="text-sm text-center"
+            style={{
+              color: message.includes("successfully")
+                ? "rgb(var(--accent-primary))"
+                : "rgb(var(--accent-secondary))",
+            }}
+          >
+            {message}
+          </p>
         )}
       </form>
     </motion.div>

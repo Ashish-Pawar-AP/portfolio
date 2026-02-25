@@ -6,14 +6,10 @@ import { createBlog, deleteBlog } from "../../api/admin.blog.api";
 import MDEditor from "@uiw/react-md-editor";
 
 /**
- * Admin Blogs Management (Advanced UI + Animations)
+ * Admin Blogs Management (Theme-Based + Premium UI)
  */
 const BlogsAdmin = () => {
-  const {
-    data: blogs = [],
-    refetch,
-    isLoading,
-  } = useQuery({
+  const { data: blogs = [], refetch, isLoading } = useQuery({
     queryKey: ["blogs"],
     queryFn: getBlogs,
   });
@@ -39,35 +35,44 @@ const BlogsAdmin = () => {
   const handleDelete = async (id) => {
     const ok = confirm("Delete this blog permanently?");
     if (!ok) return;
-
     await deleteBlog(id);
     refetch();
   };
 
   return (
-    <div className="space-y-14">
+    <div
+      className="relative space-y-14"
+      style={{ backgroundColor: "rgb(var(--bg-primary))" }}
+    >
       {/* ================= HEADER ================= */}
       <motion.div
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="flex items-center justify-between"
+        className="flex flex-wrap items-center justify-between gap-4"
       >
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Blogs</h1>
-          <p className="mt-1 text-slate-500 dark:text-slate-400">
+          <h1
+            className="text-3xl font-bold tracking-tight"
+            style={{ color: "rgb(var(--text-primary))" }}
+          >
+            Blogs
+          </h1>
+
+          <p
+            className="mt-1"
+            style={{ color: "rgb(var(--text-secondary))" }}
+          >
             Create and manage blog articles
           </p>
         </div>
 
         <span
-          className="
-            rounded-full
-            bg-blue-500/10
-            px-4 py-1
-            text-sm
-            text-blue-600 dark:text-blue-400
-          "
+          className="rounded-full px-4 py-1 text-sm font-medium"
+          style={{
+            backgroundColor: "rgba(var(--accent-primary),0.08)",
+            color: "rgb(var(--accent-primary))",
+          }}
         >
           {blogs.length} Blogs
         </span>
@@ -78,16 +83,18 @@ const BlogsAdmin = () => {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="
-          rounded-3xl
-          border border-slate-200 dark:border-slate-800
-          bg-white/70 dark:bg-slate-900/60
-          backdrop-blur
-          p-8
-          shadow-xl
-        "
+        className="rounded-3xl p-8 backdrop-blur-2xl shadow-xl"
+        style={{
+          backgroundColor: "rgba(var(--bg-secondary),0.7)",
+          border: "1px solid rgb(var(--border-color))",
+        }}
       >
-        <h2 className="mb-6 text-xl font-semibold">New Blog Post</h2>
+        <h2
+          className="mb-6 text-xl font-semibold"
+          style={{ color: "rgb(var(--text-primary))" }}
+        >
+          New Blog Post
+        </h2>
 
         <form onSubmit={handleCreate} className="space-y-6">
           {/* Title */}
@@ -97,15 +104,12 @@ const BlogsAdmin = () => {
             value={form.title}
             onChange={handleChange}
             required
-            className="
-              w-full rounded-xl
-              border border-slate-300 dark:border-slate-700
-              bg-white dark:bg-slate-950
-              px-4 py-3
-              text-slate-900 dark:text-white
-              outline-none
-              focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20
-            "
+            className="w-full rounded-xl px-4 py-3 outline-none transition-all duration-300"
+            style={{
+              backgroundColor: "rgba(var(--bg-secondary),0.9)",
+              border: "1px solid rgb(var(--border-color))",
+              color: "rgb(var(--text-primary))",
+            }}
           />
 
           {/* Slug */}
@@ -115,15 +119,12 @@ const BlogsAdmin = () => {
             value={form.slug}
             onChange={handleChange}
             required
-            className="
-              w-full rounded-xl
-              border border-slate-300 dark:border-slate-700
-              bg-white dark:bg-slate-950
-              px-4 py-3
-              text-slate-900 dark:text-white
-              outline-none
-              focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20
-            "
+            className="w-full rounded-xl px-4 py-3 outline-none transition-all duration-300"
+            style={{
+              backgroundColor: "rgba(var(--bg-secondary),0.9)",
+              border: "1px solid rgb(var(--border-color))",
+              color: "rgb(var(--text-primary))",
+            }}
           />
 
           {/* Excerpt */}
@@ -132,22 +133,27 @@ const BlogsAdmin = () => {
             placeholder="Short description / excerpt"
             value={form.excerpt}
             onChange={handleChange}
-            className="
-              w-full rounded-xl
-              border border-slate-300 dark:border-slate-700
-              bg-white dark:bg-slate-950
-              px-4 py-3
-              text-slate-900 dark:text-white
-              outline-none
-              focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20
-            "
+            className="w-full rounded-xl px-4 py-3 outline-none transition-all duration-300"
+            style={{
+              backgroundColor: "rgba(var(--bg-secondary),0.9)",
+              border: "1px solid rgb(var(--border-color))",
+              color: "rgb(var(--text-primary))",
+            }}
           />
 
           {/* Markdown Editor */}
-          <div className="rounded-xl overflow-hidden border border-slate-300 dark:border-slate-700">
+          <div
+            className="rounded-xl overflow-hidden"
+            style={{
+              border: "1px solid rgb(var(--border-color))",
+              backgroundColor: "rgba(var(--bg-secondary),0.9)",
+            }}
+          >
             <MDEditor
               value={form.content}
-              onChange={(value) => setForm({ ...form, content: value })}
+              onChange={(value) =>
+                setForm({ ...form, content: value })
+              }
             />
           </div>
 
@@ -157,12 +163,11 @@ const BlogsAdmin = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.96 }}
               type="submit"
-              className="
-                rounded-xl px-8 py-3
-                bg-linear-to-r from-blue-600 to-purple-600
-                font-medium text-white
-                shadow-lg shadow-blue-500/30
-              "
+              className="rounded-xl px-8 py-3 font-medium text-white shadow-lg transition-all duration-300"
+              style={{
+                background:
+                  "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+              }}
             >
               Publish Blog
             </motion.button>
@@ -183,9 +188,18 @@ const BlogsAdmin = () => {
         }}
         className="space-y-4"
       >
-        <h2 className="text-xl font-semibold">Published Blogs</h2>
+        <h2
+          className="text-xl font-semibold"
+          style={{ color: "rgb(var(--text-primary))" }}
+        >
+          Published Blogs
+        </h2>
 
-        {isLoading && <p className="text-slate-400">Loading blogs...</p>}
+        {isLoading && (
+          <p style={{ color: "rgb(var(--text-secondary))" }}>
+            Loading blogs...
+          </p>
+        )}
 
         <AnimatePresence>
           {blogs.map((b) => (
@@ -199,44 +213,45 @@ const BlogsAdmin = () => {
               }}
               whileHover={{ y: -3 }}
               transition={{ type: "spring", stiffness: 250 }}
-              className="
-                relative overflow-hidden
-                rounded-2xl
-                border border-slate-200 dark:border-slate-800
-                bg-white/70 dark:bg-slate-900/60
-                backdrop-blur
-                p-6
-                shadow-lg
-              "
+              className="relative overflow-hidden rounded-3xl p-6 backdrop-blur-2xl shadow-xl"
+              style={{
+                backgroundColor: "rgba(var(--bg-secondary),0.7)",
+                border: "1px solid rgb(var(--border-color))",
+              }}
             >
               {/* Hover Glow */}
               <div
-                className="
-                  absolute inset-0
-                  bg-linear-to-br
-                  from-blue-600/10 to-purple-600/10
-                  opacity-0 hover:opacity-100
-                  transition
-                "
+                className="absolute inset-0 opacity-0 hover:opacity-10 transition-all duration-500"
+                style={{
+                  background:
+                    "linear-gradient(to bottom right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+                }}
               />
 
               <div className="relative flex items-start justify-between gap-6">
                 <div>
-                  <h3 className="text-lg font-semibold">{b.title}</h3>
-                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                  <h3
+                    className="text-lg font-semibold"
+                    style={{ color: "rgb(var(--text-primary))" }}
+                  >
+                    {b.title}
+                  </h3>
+
+                  <p
+                    className="mt-1 text-sm"
+                    style={{ color: "rgb(var(--text-secondary))" }}
+                  >
                     {b.excerpt}
                   </p>
                 </div>
 
                 <button
                   onClick={() => handleDelete(b._id)}
-                  className="
-                    rounded-lg px-4 py-2
-                    text-sm font-medium
-                    text-red-500
-                    hover:bg-red-500/10
-                    transition
-                  "
+                  className="rounded-xl px-4 py-2 text-sm font-medium transition-all duration-300"
+                  style={{
+                    color: "rgb(220 38 38)",
+                    backgroundColor: "rgba(220,38,38,0.08)",
+                  }}
                 >
                   Delete
                 </button>
@@ -247,14 +262,12 @@ const BlogsAdmin = () => {
 
         {!isLoading && blogs.length === 0 && (
           <div
-            className="
-              rounded-2xl
-              border border-dashed
-              border-slate-300 dark:border-slate-700
-              p-10
-              text-center
-              text-slate-500
-            "
+            className="rounded-3xl p-10 text-center backdrop-blur-xl"
+            style={{
+              border: "1px dashed rgb(var(--border-color))",
+              color: "rgb(var(--text-secondary))",
+              backgroundColor: "rgba(var(--bg-secondary),0.5)",
+            }}
           >
             No blogs published yet.
           </div>

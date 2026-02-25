@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import api from "../../utils/axios";
 
 /**
- * Admin Messages (Advanced UI)
+ * Admin Messages (Theme-Based + Premium UI)
  */
 const MessagesAdmin = () => {
   const { data: messages = [], isLoading } = useQuery({
@@ -12,29 +12,39 @@ const MessagesAdmin = () => {
   });
 
   return (
-    <div className="space-y-10">
+    <div
+      className="relative space-y-10"
+      style={{ backgroundColor: "rgb(var(--bg-primary))" }}
+    >
       {/* ================= HEADER ================= */}
       <motion.div
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="flex items-center justify-between"
+        className="flex flex-wrap items-center justify-between gap-4"
       >
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Messages</h1>
-          <p className="mt-1 text-slate-500 dark:text-slate-400">
+          <h1
+            className="text-3xl font-bold tracking-tight"
+            style={{ color: "rgb(var(--text-primary))" }}
+          >
+            Messages
+          </h1>
+
+          <p
+            className="mt-1"
+            style={{ color: "rgb(var(--text-secondary))" }}
+          >
             Contact form submissions from visitors
           </p>
         </div>
 
         <span
-          className="
-            rounded-full
-            bg-blue-500/10
-            px-4 py-1
-            text-sm
-            text-blue-600 dark:text-blue-400
-          "
+          className="rounded-full px-4 py-1 text-sm font-medium"
+          style={{
+            backgroundColor: "rgba(var(--accent-primary),0.08)",
+            color: "rgb(var(--accent-primary))",
+          }}
         >
           {messages.length} Messages
         </span>
@@ -54,7 +64,11 @@ const MessagesAdmin = () => {
         className="space-y-6"
       >
         {/* Loading */}
-        {isLoading && <div className="text-slate-400">Loading messages...</div>}
+        {isLoading && (
+          <div style={{ color: "rgb(var(--text-secondary))" }}>
+            Loading messages...
+          </div>
+        )}
 
         <AnimatePresence>
           {!isLoading &&
@@ -67,46 +81,53 @@ const MessagesAdmin = () => {
                 exit={{ opacity: 0, scale: 0.95 }}
                 whileHover={{ y: -4 }}
                 transition={{ type: "spring", stiffness: 260 }}
-                className="
-                  relative overflow-hidden
-                  rounded-2xl
-                  border border-slate-200 dark:border-slate-800
-                  bg-white/70 dark:bg-slate-900/60
-                  backdrop-blur
-                  p-6
-                  shadow-lg
-                "
+                className="relative overflow-hidden rounded-3xl p-6 backdrop-blur-2xl shadow-xl transition-all duration-500"
+                style={{
+                  backgroundColor: "rgba(var(--bg-secondary),0.7)",
+                  border: "1px solid rgb(var(--border-color))",
+                }}
               >
-                {/* Hover Glow */}
+                {/* Hover Accent Glow */}
                 <div
-                  className="
-                    absolute inset-0
-                    bg-linear-to-br
-                    from-blue-600/10 to-purple-600/10
-                    opacity-0 hover:opacity-100
-                    transition
-                  "
+                  className="absolute inset-0 opacity-0 hover:opacity-10 transition-all duration-500"
+                  style={{
+                    background:
+                      "linear-gradient(to bottom right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+                  }}
                 />
 
                 <div className="relative space-y-3">
                   {/* Sender */}
                   <div className="flex flex-wrap items-center gap-2">
-                    <p className="font-semibold text-slate-900 dark:text-white">
+                    <p
+                      className="font-semibold"
+                      style={{ color: "rgb(var(--text-primary))" }}
+                    >
                       {msg.name}
                     </p>
-                    <span className="text-sm text-slate-500 dark:text-slate-400">
+
+                    <span
+                      className="text-sm"
+                      style={{ color: "rgb(var(--text-secondary))" }}
+                    >
                       ({msg.email})
                     </span>
                   </div>
 
                   {/* Message */}
-                  <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                  <p
+                    className="leading-relaxed"
+                    style={{ color: "rgb(var(--text-secondary))" }}
+                  >
                     {msg.message}
                   </p>
 
                   {/* Meta */}
                   {msg.createdAt && (
-                    <p className="text-xs text-slate-400 pt-2">
+                    <p
+                      className="text-xs pt-2"
+                      style={{ color: "rgb(var(--text-secondary))" }}
+                    >
                       {new Date(msg.createdAt).toLocaleString()}
                     </p>
                   )}
@@ -118,14 +139,12 @@ const MessagesAdmin = () => {
         {/* Empty State */}
         {!isLoading && messages.length === 0 && (
           <div
-            className="
-              rounded-2xl
-              border border-dashed
-              border-slate-300 dark:border-slate-700
-              p-10
-              text-center
-              text-slate-500
-            "
+            className="rounded-3xl border-dashed p-10 text-center backdrop-blur-xl"
+            style={{
+              border: "1px dashed rgb(var(--border-color))",
+              color: "rgb(var(--text-secondary))",
+              backgroundColor: "rgba(var(--bg-secondary),0.5)",
+            }}
           >
             No messages received yet.
           </div>

@@ -98,8 +98,8 @@ export const loginAdmin = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: true,
-    sameSite: "none",
+    secure: NODE_ENV === "production",
+    sameSite: "lax",
     path: "/",
   };
 
@@ -138,8 +138,8 @@ export const logoutAdmin = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: true,
-    sameSite: "none",
+    secure: NODE_ENV === "production",
+    sameSite: "lax",
     path: "/",
   };
 
@@ -171,4 +171,12 @@ export const changePassword = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(new ApiResponse(200, {}, "Password changed successfully"));
+});
+
+export const authMe = asyncHandler(async (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: "Authenticated user",
+    user: req.user, // already sanitized in middleware
+  });
 });

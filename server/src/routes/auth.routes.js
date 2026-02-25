@@ -3,7 +3,8 @@ import {
   registerAdmin,
   loginAdmin,
   logoutAdmin,
-  changePassword
+  changePassword,
+  authMe
 } from "../controllers/auth.controller.js";
 import { protectAdmin } from "../middlewares/auth.middleware.js";
 
@@ -20,5 +21,7 @@ router.post("/logout", protectAdmin, logoutAdmin);
 
 /* Change password */
 router.put("/change-password", protectAdmin, changePassword);
+
+router.get("/me", protectAdmin, authMe);
 
 export default router;

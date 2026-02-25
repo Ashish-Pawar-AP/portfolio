@@ -30,34 +30,64 @@ const Projects = () => {
       "Real-world MERN stack projects with detailed case studies and live demos.",
   });
 
-  const { data: projects, isLoading } = useQuery({
+  const { data: projects = [], isLoading } = useQuery({
     queryKey: ["projects"],
     queryFn: getProjects,
   });
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center text-slate-500">
+      <div
+        className="flex min-h-[60vh] items-center justify-center text-base"
+        style={{ color: "rgb(var(--text-secondary))" }}
+      >
         Loading projects…
       </div>
     );
   }
 
   return (
-    <section className="relative mx-auto max-w-7xl px-8 py-24">
+    <section
+      className="relative mx-auto max-w-7xl px-6 md:px-8 py-24 md:py-28 overflow-hidden"
+      style={{ backgroundColor: "rgb(var(--bg-primary))" }}
+    >
+      {/* Background Glow */}
+      <div
+        className="absolute -top-40 -left-40 h-96 w-96 rounded-full blur-[140px]"
+        style={{
+          backgroundColor: "rgba(var(--accent-primary),0.08)",
+        }}
+      />
+      <div
+        className="absolute top-1/3 -right-40 h-96 w-96 rounded-full blur-[140px]"
+        style={{
+          backgroundColor: "rgba(var(--accent-secondary),0.08)",
+        }}
+      />
+
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="mb-16 max-w-3xl"
+        className="relative mb-16 max-w-3xl"
       >
         <h1 className="text-4xl font-bold md:text-5xl">
-          <span className="bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <span
+            className="bg-clip-text text-transparent"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+            }}
+          >
             Projects
           </span>
         </h1>
-        <p className="mt-3 text-lg text-slate-600 dark:text-slate-400">
+
+        <p
+          className="mt-4 text-base md:text-lg"
+          style={{ color: "rgb(var(--text-secondary))" }}
+        >
           Real-world projects with architecture, decisions, and case studies
         </p>
       </motion.div>
@@ -67,11 +97,7 @@ const Projects = () => {
         variants={container}
         initial="hidden"
         animate="visible"
-        className="
-          grid gap-10
-          sm:grid-cols-2
-          lg:grid-cols-3
-        "
+        className="relative grid gap-10 sm:grid-cols-2 lg:grid-cols-3"
       >
         {projects.map((project) => (
           <motion.div key={project._id} variants={fadeUp}>

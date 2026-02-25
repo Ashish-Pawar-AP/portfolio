@@ -9,7 +9,7 @@ import {
 } from "../../api/admin.skill.api";
 
 /**
- * Admin Skills Management (FULL CRUD)
+ * Admin Skills Management (Theme-Based + Premium CMS)
  */
 const SkillsAdmin = () => {
   const {
@@ -64,17 +64,31 @@ const SkillsAdmin = () => {
   };
 
   return (
-    <div className="space-y-12">
+    <div
+      className="space-y-12"
+      style={{ backgroundColor: "rgb(var(--bg-primary))" }}
+    >
       {/* HEADER */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Skills</h1>
-          <p className="text-slate-500 dark:text-slate-400">
+          <h1
+            className="text-3xl font-bold"
+            style={{ color: "rgb(var(--text-primary))" }}
+          >
+            Skills
+          </h1>
+          <p style={{ color: "rgb(var(--text-secondary))" }}>
             Add, update and manage skills
           </p>
         </div>
 
-        <span className="rounded-full bg-purple-500/10 px-4 py-1 text-sm text-purple-600">
+        <span
+          className="rounded-full px-4 py-1 text-sm font-medium"
+          style={{
+            backgroundColor: "rgba(var(--accent-primary),0.12)",
+            color: "rgb(var(--accent-primary))",
+          }}
+        >
           {skills.length} Skills
         </span>
       </div>
@@ -84,13 +98,18 @@ const SkillsAdmin = () => {
         onSubmit={handleAdd}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="
-          rounded-3xl border border-slate-200 dark:border-slate-800
-          bg-white/70 dark:bg-slate-900/60 backdrop-blur
-          p-6 shadow-xl space-y-4
-        "
+        className="rounded-3xl p-6 space-y-4 backdrop-blur-2xl shadow-xl"
+        style={{
+          backgroundColor: "rgba(var(--bg-secondary),0.7)",
+          border: "1px solid rgb(var(--border-color))",
+        }}
       >
-        <h2 className="text-xl font-semibold">Add New Skill</h2>
+        <h2
+          className="text-xl font-semibold"
+          style={{ color: "rgb(var(--text-primary))" }}
+        >
+          Add New Skill
+        </h2>
 
         <div className="grid md:grid-cols-4 gap-4">
           <input
@@ -100,7 +119,12 @@ const SkillsAdmin = () => {
               setForm({ ...form, name: e.target.value })
             }
             required
-            className="rounded-xl border px-4 py-3"
+            className="rounded-xl px-4 py-3 outline-none"
+            style={{
+              backgroundColor: "rgba(var(--bg-secondary),0.9)",
+              border: "1px solid rgb(var(--border-color))",
+              color: "rgb(var(--text-primary))",
+            }}
           />
 
           <select
@@ -108,7 +132,12 @@ const SkillsAdmin = () => {
             onChange={(e) =>
               setForm({ ...form, category: e.target.value })
             }
-            className="rounded-xl border px-4 py-3"
+            className="rounded-xl px-4 py-3 outline-none"
+            style={{
+              backgroundColor: "rgba(var(--bg-secondary),0.9)",
+              border: "1px solid rgb(var(--border-color))",
+              color: "rgb(var(--text-primary))",
+            }}
           >
             {["frontend", "backend", "database", "tools"].map(
               (c) => (
@@ -128,24 +157,35 @@ const SkillsAdmin = () => {
             onChange={(e) =>
               setForm({ ...form, level: e.target.value })
             }
-            className="rounded-xl border px-4 py-3"
+            className="rounded-xl px-4 py-3 outline-none"
+            style={{
+              backgroundColor: "rgba(var(--bg-secondary),0.9)",
+              border: "1px solid rgb(var(--border-color))",
+              color: "rgb(var(--text-primary))",
+            }}
           />
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
             type="submit"
-            className="
-              rounded-xl bg-linear-to-r
-              from-purple-600 to-blue-600
-              text-white font-medium
-            "
+            className="rounded-xl text-white font-medium"
+            style={{
+              background:
+                "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+            }}
           >
             Add Skill
-          </button>
+          </motion.button>
         </div>
       </motion.form>
 
       {/* SKILLS LIST */}
-      {isLoading && <p className="text-slate-400">Loading…</p>}
+      {isLoading && (
+        <p style={{ color: "rgb(var(--text-secondary))" }}>
+          Loading…
+        </p>
+      )}
 
       <motion.div
         className="grid md:grid-cols-2 gap-6"
@@ -165,41 +205,67 @@ const SkillsAdmin = () => {
                 layout
                 exit={{ opacity: 0, scale: 0.95 }}
                 whileHover={{ y: -4 }}
-                className="
-                  relative rounded-2xl border
-                  bg-white/70 dark:bg-slate-900/60
-                  backdrop-blur p-6 shadow-lg
-                "
+                className="rounded-2xl p-6 backdrop-blur-xl shadow-lg"
+                style={{
+                  backgroundColor:
+                    "rgba(var(--bg-secondary),0.7)",
+                  border: "1px solid rgb(var(--border-color))",
+                }}
               >
-                <h3 className="font-semibold text-lg">
+                <h3
+                  className="font-semibold text-lg"
+                  style={{ color: "rgb(var(--text-primary))" }}
+                >
                   {skill.name}
                 </h3>
 
-                <p className="text-xs text-slate-500 uppercase">
+                <p
+                  className="text-xs uppercase"
+                  style={{ color: "rgb(var(--text-secondary))" }}
+                >
                   {skill.category}
                 </p>
 
-                <div className="mt-3 h-2 rounded-full bg-slate-200 dark:bg-slate-800">
+                <div
+                  className="mt-3 h-2 rounded-full"
+                  style={{
+                    backgroundColor:
+                      "rgba(var(--accent-primary),0.1)",
+                  }}
+                >
                   <div
-                    style={{ width: `${percent}%` }}
-                    className="h-full rounded-full bg-linear-to-r from-purple-600 to-blue-600"
+                    style={{
+                      width: `${percent}%`,
+                      background:
+                        "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+                    }}
+                    className="h-full rounded-full transition-all"
                   />
                 </div>
 
-                <p className="mt-2 text-sm text-slate-500">
+                <p
+                  className="mt-2 text-sm"
+                  style={{ color: "rgb(var(--text-secondary))" }}
+                >
                   {percent}%
                 </p>
 
                 <div className="mt-4 flex justify-end gap-3">
                   <button
                     onClick={() => setEditing({ ...skill })}
-                    className="text-sm text-blue-600 hover:underline"
+                    style={{
+                      color: "rgb(var(--accent-primary))",
+                    }}
+                    className="text-sm"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => handleDelete(skill._id)}
-                    className="text-sm text-red-500 hover:underline"
+                    style={{
+                      color: "rgb(var(--accent-secondary))",
+                    }}
+                    className="text-sm"
                   >
                     Delete
                   </button>
@@ -217,70 +283,67 @@ const SkillsAdmin = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center"
+            className="fixed inset-0 z-50 flex items-center justify-center"
+            style={{
+              backgroundColor: "rgba(0,0,0,0.4)",
+            }}
           >
             <motion.form
               onSubmit={handleUpdate}
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.9 }}
-              className="w-full max-w-md rounded-3xl bg-white dark:bg-slate-900 p-6 space-y-4"
+              className="w-full max-w-md rounded-3xl p-6 space-y-4 backdrop-blur-2xl"
+              style={{
+                backgroundColor:
+                  "rgba(var(--bg-secondary),0.95)",
+                border: "1px solid rgb(var(--border-color))",
+              }}
             >
-              <h2 className="text-xl font-semibold">Update Skill</h2>
+              <h2
+                className="text-xl font-semibold"
+                style={{
+                  color: "rgb(var(--text-primary))",
+                }}
+              >
+                Update Skill
+              </h2>
 
               <input
                 value={editing.name}
                 onChange={(e) =>
-                  setEditing({ ...editing, name: e.target.value })
-                }
-                className="w-full rounded-xl border px-4 py-3"
-              />
-
-              <select
-                value={editing.category}
-                onChange={(e) =>
                   setEditing({
                     ...editing,
-                    category: e.target.value,
+                    name: e.target.value,
                   })
                 }
-                className="w-full rounded-xl border px-4 py-3"
-              >
-                {["frontend", "backend", "database", "tools"].map(
-                  (c) => (
-                    <option key={c} value={c}>
-                      {c}
-                    </option>
-                  )
-                )}
-              </select>
-
-              <input
-                type="number"
-                min="1"
-                max="5"
-                step="0.1"
-                value={editing.level}
-                onChange={(e) =>
-                  setEditing({
-                    ...editing,
-                    level: e.target.value,
-                  })
-                }
-                className="w-full rounded-xl border px-4 py-3"
+                className="w-full rounded-xl px-4 py-3 outline-none"
+                style={{
+                  backgroundColor:
+                    "rgba(var(--bg-secondary),0.9)",
+                  border:
+                    "1px solid rgb(var(--border-color))",
+                  color: "rgb(var(--text-primary))",
+                }}
               />
 
               <div className="flex justify-end gap-3 pt-2">
                 <button
                   type="button"
                   onClick={() => setEditing(null)}
-                  className="text-sm"
+                  style={{
+                    color: "rgb(var(--text-secondary))",
+                  }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded-xl px-6 py-2 bg-linear-to-r from-blue-600 to-purple-600 text-white"
+                  className="rounded-xl px-6 py-2 text-white"
+                  style={{
+                    background:
+                      "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+                  }}
                 >
                   Save
                 </button>

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { getProjectById } from "../../api/project.api";
 import useSEO from "../../hooks/useSEO";
@@ -36,45 +36,73 @@ const ProjectDetails = () => {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center text-slate-500">
+      <div
+        className="flex min-h-[60vh] items-center justify-center"
+        style={{ color: "rgb(var(--text-secondary))" }}
+      >
         Loading project…
       </div>
     );
   }
 
   return (
-    <section className="relative mx-auto max-w-5xl px-8 py-24">
+    <section
+      className="relative mx-auto max-w-5xl px-6 md:px-8 py-24 overflow-hidden"
+      style={{ backgroundColor: "rgb(var(--bg-primary))" }}
+    >
+      {/* Background Glow */}
+      <div
+        className="absolute -top-40 -left-40 h-96 w-96 rounded-full blur-[140px]"
+        style={{ backgroundColor: "rgba(var(--accent-primary),0.08)" }}
+      />
+      <div
+        className="absolute top-1/3 -right-40 h-96 w-96 rounded-full blur-[140px]"
+        style={{ backgroundColor: "rgba(var(--accent-secondary),0.08)" }}
+      />
+
       <motion.div
         variants={container}
         initial="hidden"
         animate="visible"
-        className="space-y-14"
+        className="relative space-y-14"
       >
         {/* HEADER */}
-        <motion.div variants={fadeUp} className="space-y-3">
-          <h1 className="text-4xl font-bold md:text-5xl">{project.title}</h1>
-          <p className="max-w-2xl text-lg text-slate-600 dark:text-slate-400">
+        <motion.div variants={fadeUp} className="space-y-4">
+          <h1
+            className="text-4xl font-bold md:text-5xl"
+            style={{ color: "rgb(var(--text-primary))" }}
+          >
+            {project.title}
+          </h1>
+
+          <p
+            className="max-w-2xl text-base md:text-lg"
+            style={{ color: "rgb(var(--text-secondary))" }}
+          >
             {project.shortDescription}
           </p>
         </motion.div>
 
         {/* TECH STACK */}
         <motion.div variants={fadeUp}>
-          <h2 className="mb-4 text-xl font-semibold">Tech Stack</h2>
+          <h2
+            className="mb-4 text-xl font-semibold"
+            style={{ color: "rgb(var(--text-primary))" }}
+          >
+            Tech Stack
+          </h2>
+
           <div className="flex flex-wrap gap-3">
             {project.techStack.map((tech, index) => (
               <motion.span
                 key={index}
-                variants={fadeUp}
                 whileHover={{ y: -3 }}
-                className="
-                  rounded-full border
-                  border-slate-300 dark:border-slate-700
-                  bg-white/70 dark:bg-slate-900/60
-                  px-4 py-1.5 text-sm
-                  text-slate-700 dark:text-slate-300
-                  backdrop-blur
-                "
+                className="rounded-full px-4 py-1.5 text-sm backdrop-blur-xl transition-all duration-300"
+                style={{
+                  backgroundColor: "rgba(var(--bg-secondary),0.7)",
+                  border: "1px solid rgb(var(--border-color))",
+                  color: "rgb(var(--text-secondary))",
+                }}
               >
                 {tech}
               </motion.span>
@@ -91,22 +119,27 @@ const ProjectDetails = () => {
           <motion.div
             key={section.title}
             variants={fadeUp}
-            className="
-              rounded-2xl
-              border border-slate-200 dark:border-slate-800
-              bg-white/80 dark:bg-slate-900/70
-              p-8
-              backdrop-blur-xl
-              shadow-lg
-            "
+            className="rounded-3xl p-8 backdrop-blur-2xl shadow-xl transition-all duration-500"
+            style={{
+              backgroundColor: "rgba(var(--bg-secondary),0.7)",
+              border: "1px solid rgb(var(--border-color))",
+            }}
           >
-            <h2 className="mb-3 text-xl font-semibold">{section.title}</h2>
-            <p className="leading-relaxed text-slate-600 dark:text-slate-400">
+            <h2
+              className="mb-4 text-xl font-semibold"
+              style={{ color: "rgb(var(--text-primary))" }}
+            >
+              {section.title}
+            </h2>
+
+            <p
+              className="leading-relaxed"
+              style={{ color: "rgb(var(--text-secondary))" }}
+            >
               {section.content}
             </p>
           </motion.div>
         ))}
-
 
         {/* LINKS */}
         <motion.div variants={fadeUp} className="flex flex-wrap gap-4">
@@ -117,13 +150,12 @@ const ProjectDetails = () => {
               href={project.githubUrl}
               target="_blank"
               rel="noreferrer"
-              className="
-                rounded-lg px-6 py-3
-                border border-slate-300 dark:border-slate-700
-                bg-white/70 dark:bg-slate-900/60
-                text-slate-700 dark:text-slate-200
-                backdrop-blur
-              "
+              className="rounded-xl px-6 py-3 transition-all duration-300"
+              style={{
+                backgroundColor: "rgba(var(--bg-secondary),0.7)",
+                border: "1px solid rgb(var(--border-color))",
+                color: "rgb(var(--text-primary))",
+              }}
             >
               GitHub Repo
             </motion.a>
@@ -136,11 +168,11 @@ const ProjectDetails = () => {
               href={project.liveUrl}
               target="_blank"
               rel="noreferrer"
-              className="
-                rounded-lg px-6 py-3
-                bg-blue-600 text-white
-                shadow-lg shadow-blue-500/30
-              "
+              className="rounded-xl px-6 py-3 font-medium text-white shadow-lg transition-all duration-300"
+              style={{
+                background:
+                  "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+              }}
             >
               Live Demo
             </motion.a>

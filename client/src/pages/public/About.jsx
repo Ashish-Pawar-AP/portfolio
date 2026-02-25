@@ -27,16 +27,31 @@ const About = () => {
     queryFn: getSkills,
   });
   if (isLoading) {
-  return <AboutSkeleton />;
-}
+    return <AboutSkeleton />;
+  }
 
   return (
     <section className="relative overflow-hidden">
-      {/* Background Glow */}
-      <div className="absolute -top-40 -left-40 h-125 w-125 rounded-full bg-blue-500/20 blur-[120px]" />
-      <div className="absolute top-1/3 -right-40 h-125 w-125 rounded-full bg-purple-500/20 blur-[120px]" />
+      {/* Animated Theme Glow Background */}
+      <motion.div
+        animate={{ scale: [1, 1.1, 1] }}
+        transition={{ duration: 10, repeat: Infinity }}
+        className="absolute -top-40 -left-40 h-96 w-96 rounded-full blur-[140px]"
+        style={{
+          backgroundColor: "rgba(var(--accent-primary),0.18)",
+        }}
+      />
 
-      <div className="relative mx-auto max-w-6xl px-8 py-24">
+      <motion.div
+        animate={{ scale: [1, 1.15, 1] }}
+        transition={{ duration: 12, repeat: Infinity }}
+        className="absolute top-1/3 -right-40 h-96 w-96 rounded-full blur-[140px]"
+        style={{
+          backgroundColor: "rgba(var(--accent-secondary),0.18)",
+        }}
+      />
+
+      <div className="relative mx-auto max-w-7xl px-6 sm:px-10 py-20 md:py-32">
         <motion.div
           initial="hidden"
           animate="visible"
@@ -51,7 +66,7 @@ const About = () => {
               },
             },
           }}
-          className="space-y-24"
+          className="space-y-20 md:space-y-28"
         >
           {/* ================= ABOUT INTRO ================= */}
           <motion.div
@@ -59,24 +74,26 @@ const About = () => {
               hidden: { opacity: 0, y: 20 },
               visible: { opacity: 1, y: 0 },
             }}
-            className="
-              rounded-3xl
-              border border-slate-200 dark:border-slate-800
-              bg-white/70 dark:bg-slate-900/60
-              backdrop-blur
-              p-10
-              shadow-xl
-              space-y-6
-            "
+            className="rounded-3xl p-8 md:p-12 backdrop-blur-2xl border transition-all duration-500"
+            style={{
+              backgroundColor: "rgba(var(--bg-secondary),0.7)",
+              borderColor: "rgb(var(--border-color))",
+            }}
           >
-            <h1 className="text-4xl font-bold">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
               About{" "}
-              <span className="bg-linear-to-r from-blue-500 to-purple-600 bg-clip-text text-transparent">
+              <span
+                className="bg-clip-text text-transparent"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+                }}
+              >
                 Me
               </span>
             </h1>
 
-            <p className="max-w-3xl text-slate-600 dark:text-slate-400 leading-relaxed">
+            <p className="mt-6 max-w-3xl text-base md:text-lg leading-relaxed text-[rgb(var(--text-secondary))]">
               {profile?.bio}
             </p>
           </motion.div>
@@ -89,16 +106,16 @@ const About = () => {
             }}
             className="space-y-10"
           >
-            <div>
-              <h2 className="text-3xl font-semibold">
+            <div className="text-center md:text-left">
+              <h2 className="text-2xl md:text-3xl font-semibold">
                 Skills & Expertise
               </h2>
-              <p className="mt-2 text-slate-500 dark:text-slate-400">
+              <p className="mt-2 text-sm md:text-base text-[rgb(var(--text-secondary))]">
                 Technologies and tools I use to build real-world applications
               </p>
             </div>
 
-            {/* Skills Section (kept reusable) */}
+            {/* Reusable Skills Section */}
             <SkillsSection skills={skills} />
           </motion.div>
 
@@ -110,25 +127,21 @@ const About = () => {
             }}
             className="space-y-10"
           >
-            <div>
-              <h2 className="text-3xl font-semibold">
+            <div className="text-center md:text-left">
+              <h2 className="text-2xl md:text-3xl font-semibold">
                 Experience & Journey
               </h2>
-              <p className="mt-2 text-slate-500 dark:text-slate-400">
+              <p className="mt-2 text-sm md:text-base text-[rgb(var(--text-secondary))]">
                 My professional growth and learning timeline
               </p>
             </div>
 
-            {/* Timeline Component */}
             <div
-              className="
-                rounded-3xl
-                border border-slate-200 dark:border-slate-800
-                bg-white/70 dark:bg-slate-900/60
-                backdrop-blur
-                p-10
-                shadow-xl
-              "
+              className="rounded-3xl p-8 md:p-12 backdrop-blur-2xl border transition-all duration-500"
+              style={{
+                backgroundColor: "rgba(var(--bg-secondary),0.7)",
+                borderColor: "rgb(var(--border-color))",
+              }}
             >
               <Timeline />
             </div>
@@ -141,7 +154,7 @@ const About = () => {
                 hidden: { opacity: 0, scale: 0.9 },
                 visible: { opacity: 1, scale: 1 },
               }}
-              className="text-center"
+              className="text-center pt-6"
             >
               <motion.a
                 whileHover={{ scale: 1.05 }}
@@ -149,13 +162,11 @@ const About = () => {
                 href={profile.resumeUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="
-                  inline-flex items-center justify-center
-                  rounded-xl px-10 py-4
-                  bg-linear-to-r from-blue-600 to-purple-600
-                  text-white font-medium
-                  shadow-lg shadow-blue-500/30
-                "
+                className="inline-flex items-center justify-center rounded-xl px-10 py-4 font-medium text-white shadow-lg transition-all duration-300"
+                style={{
+                  background:
+                    "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+                }}
               >
                 Download Resume
               </motion.a>

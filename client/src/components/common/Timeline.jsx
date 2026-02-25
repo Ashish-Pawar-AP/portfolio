@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 /**
- * Advanced Vertical Timeline
+ * Premium Theme-Based Vertical Timeline
  */
 const Timeline = () => {
   const items = [
@@ -28,18 +28,34 @@ const Timeline = () => {
         transition={{ duration: 0.5 }}
         className="mb-14"
       >
-        <h2 className="text-3xl font-bold tracking-tight">
+        <h2
+          className="text-3xl font-bold tracking-tight"
+          style={{ color: "rgb(var(--text-primary))" }}
+        >
           Experience Timeline
         </h2>
-        <div className="mt-3 h-1 w-24 rounded-full bg-linear-to-r from-blue-500 to-purple-500" />
+
+        <div
+          className="mt-3 h-1 w-24 rounded-full"
+          style={{
+            background:
+              "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+          }}
+        />
       </motion.div>
 
       {/* Timeline Container */}
       <div className="relative pl-10">
         {/* Vertical Line */}
-        <div className="absolute left-4 top-0 h-full w-px bg-linear-to-b from-blue-500 via-purple-500 to-transparent" />
+        <div
+          className="absolute left-4 top-0 h-full w-px"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgb(var(--accent-primary)), rgb(var(--accent-secondary)), transparent)",
+          }}
+        />
 
-        {/* Timeline Items */}
+        {/* Items */}
         <div className="space-y-12">
           {items.map((item, index) => (
             <motion.div
@@ -51,38 +67,48 @@ const Timeline = () => {
               className="relative group"
             >
               {/* Dot */}
-              <span
-                className="
-                  absolute left-0 top-2
-                  flex h-4 w-4 items-center justify-center
-                "
-              >
-                <span className="absolute inline-flex h-4 w-4 rounded-full bg-blue-500 opacity-75 animate-ping" />
-                <span className="relative inline-flex h-4 w-4 rounded-full bg-blue-600" />
+              <span className="absolute left-0 top-2 flex h-4 w-4 items-center justify-center">
+                <span
+                  className="absolute inline-flex h-4 w-4 rounded-full opacity-70 animate-ping"
+                  style={{
+                    backgroundColor: "rgb(var(--accent-primary))",
+                  }}
+                />
+                <span
+                  className="relative inline-flex h-4 w-4 rounded-full"
+                  style={{
+                    background:
+                      "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+                  }}
+                />
               </span>
 
               {/* Card */}
               <div
-                className="
-                  ml-10
-                  rounded-2xl
-                  border border-slate-200 dark:border-slate-800
-                  bg-white/70 dark:bg-slate-900/60
-                  p-6
-                  backdrop-blur-xl
-                  shadow-lg
-                  transition
-                  group-hover:shadow-2xl
-                  group-hover:-translate-y-1
-                "
+                className="ml-10 rounded-2xl p-6 backdrop-blur-2xl shadow-xl transition-all duration-500 group-hover:-translate-y-1 group-hover:shadow-2xl"
+                style={{
+                  backgroundColor: "rgba(var(--bg-secondary),0.7)",
+                  border: "1px solid rgb(var(--border-color))",
+                }}
               >
-                <h4 className="text-lg font-semibold">{item.title}</h4>
+                <h4
+                  className="text-lg font-semibold"
+                  style={{ color: "rgb(var(--text-primary))" }}
+                >
+                  {item.title}
+                </h4>
 
-                <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                <p
+                  className="mt-1 text-sm"
+                  style={{ color: "rgb(var(--text-secondary))" }}
+                >
                   {item.period}
                 </p>
 
-                <p className="mt-4 text-slate-600 dark:text-slate-400 leading-relaxed">
+                <p
+                  className="mt-4 leading-relaxed"
+                  style={{ color: "rgb(var(--text-secondary))" }}
+                >
                   {item.description}
                 </p>
               </div>

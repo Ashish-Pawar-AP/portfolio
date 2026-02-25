@@ -1,42 +1,70 @@
 import { motion } from "framer-motion";
+import { useAuth } from "../../context/AuthContext";
 
 /**
- * Admin Dashboard (Advanced UI + Animations)
+ * Admin Dashboard (Theme-Based + Premium UI)
  */
 const Dashboard = () => {
+  const { user, loading, logout } = useAuth();
+
+  if (loading) {
+    return (
+      <div
+        className="flex h-[60vh] items-center justify-center"
+        style={{ color: "rgb(var(--text-secondary))" }}
+      >
+        Loading dashboard...
+      </div>
+    );
+  }
+
   const cards = [
-    {
-      title: "Total Projects",
-      value: "—",
-      gradient: "from-blue-600 to-cyan-500",
-    },
-    {
-      title: "Skills",
-      value: "—",
-      gradient: "from-purple-600 to-pink-500",
-    },
-    {
-      title: "Messages",
-      value: "—",
-      gradient: "from-emerald-600 to-teal-500",
-    },
+    { title: "Total Projects", value: "—" },
+    { title: "Skills", value: "—" },
+    { title: "Messages", value: "—" },
   ];
 
   return (
-    <div className="space-y-10">
-      {/* Header */}
+    <div
+      className="relative space-y-12"
+      style={{ backgroundColor: "rgb(var(--bg-primary))" }}
+    >
+      {/* HEADER */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
+        className="flex flex-wrap items-start justify-between gap-4"
       >
-        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <p className="mt-2 text-slate-500 dark:text-slate-400">
-          Overview of your portfolio system
-        </p>
+        <div>
+          <h1
+            className="text-3xl font-bold tracking-tight"
+            style={{ color: "rgb(var(--text-primary))" }}
+          >
+            Dashboard
+          </h1>
+
+          <p
+            className="mt-2"
+            style={{ color: "rgb(var(--text-secondary))" }}
+          >
+            Welcome back{user?.name ? `, ${user.name}` : ""} 👋
+          </p>
+        </div>
+
+        <button
+          onClick={logout}
+          className="rounded-xl px-5 py-2 text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95"
+          style={{
+            color: "rgb(220 38 38)",
+            backgroundColor: "rgba(220,38,38,0.08)",
+          }}
+        >
+          Logout
+        </button>
       </motion.div>
 
-      {/* Stat Cards */}
+      {/* STAT CARDS */}
       <motion.div
         initial="hidden"
         animate="visible"
@@ -44,9 +72,7 @@ const Dashboard = () => {
           hidden: { opacity: 0 },
           visible: {
             opacity: 1,
-            transition: {
-              staggerChildren: 0.15,
-            },
+            transition: { staggerChildren: 0.15 },
           },
         }}
         className="grid gap-6 md:grid-cols-3"
@@ -60,58 +86,73 @@ const Dashboard = () => {
             }}
             whileHover={{ y: -6 }}
             transition={{ type: "spring", stiffness: 250 }}
-            className="
-              relative overflow-hidden
-              rounded-2xl border
-              border-slate-200 dark:border-slate-800
-              bg-white/70 dark:bg-slate-900/60
-              backdrop-blur
-              p-6
-              shadow-xl
-            "
+            className="relative overflow-hidden rounded-3xl p-6 backdrop-blur-2xl shadow-xl transition-all duration-500"
+            style={{
+              backgroundColor: "rgba(var(--bg-secondary),0.7)",
+              border: "1px solid rgb(var(--border-color))",
+            }}
           >
-            {/* Gradient Glow */}
+            {/* Hover Accent Glow */}
             <div
-              className={`
-                absolute inset-0 opacity-0 hover:opacity-20 transition
-                bg-linear-to-br ${card.gradient}
-              `}
+              className="absolute inset-0 opacity-0 hover:opacity-10 transition-all duration-500"
+              style={{
+                background:
+                  "linear-gradient(to bottom right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+              }}
             />
 
-            {/* Content */}
             <div className="relative space-y-3">
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <p
+                className="text-sm"
+                style={{ color: "rgb(var(--text-secondary))" }}
+              >
                 {card.title}
               </p>
 
-              <h2 className="text-3xl font-bold">{card.value}</h2>
+              <h2
+                className="text-3xl font-bold"
+                style={{ color: "rgb(var(--text-primary))" }}
+              >
+                {card.value}
+              </h2>
 
-              <div className="h-1 w-16 rounded-full bg-linear-to-r from-slate-300 to-slate-500 dark:from-slate-700 dark:to-slate-500" />
+              <div
+                className="h-1 w-16 rounded-full"
+                style={{
+                  background:
+                    "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+                }}
+              />
             </div>
           </motion.div>
         ))}
       </motion.div>
 
-      {/* Activity / Welcome Card */}
+      {/* WELCOME CARD */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, delay: 0.3 }}
-        className="
-          rounded-3xl
-          border border-slate-200 dark:border-slate-800
-          bg-linear-to-br from-white/80 to-white/40
-          dark:from-slate-900/70 dark:to-slate-900/40
-          backdrop-blur
-          p-8
-          shadow-xl
-        "
+        className="rounded-3xl p-8 backdrop-blur-2xl shadow-xl"
+        style={{
+          backgroundColor: "rgba(var(--bg-secondary),0.7)",
+          border: "1px solid rgb(var(--border-color))",
+        }}
       >
-        <h3 className="text-xl font-semibold mb-2">Welcome back 👋</h3>
-        <p className="text-slate-600 dark:text-slate-400 max-w-xl">
-          From here you can manage projects, skills, blogs, messages, and
-          monitor analytics. This dashboard is designed to scale as your
-          portfolio grows.
+        <h3
+          className="mb-3 text-xl font-semibold"
+          style={{ color: "rgb(var(--text-primary))" }}
+        >
+          Admin Control Center
+        </h3>
+
+        <p
+          className="max-w-xl leading-relaxed"
+          style={{ color: "rgb(var(--text-secondary))" }}
+        >
+          Manage projects, skills, blogs, messages, and resume data
+          from a single secure dashboard. Built to scale with your
+          portfolio.
         </p>
       </motion.div>
     </div>

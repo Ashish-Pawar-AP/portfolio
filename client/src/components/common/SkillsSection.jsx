@@ -44,24 +44,29 @@ const SkillsSection = ({ skills }) => {
         <motion.div
           key={category}
           variants={item}
-          className="
-            relative
-            rounded-3xl
-            overflow-hidden
-            border border-slate-200 dark:border-slate-800
-            bg-white/70 dark:bg-slate-900/60
-            backdrop-blur-xl
-            p-6
-            shadow-lg
-            transition
-            hover:shadow-xl
-          "
+          whileHover={{ y: -4 }}
+          className="relative rounded-3xl overflow-hidden p-6 backdrop-blur-2xl shadow-xl transition-all duration-500"
+          style={{
+            backgroundColor: "rgba(var(--bg-secondary),0.7)",
+            border: "1px solid rgb(var(--border-color))",
+          }}
         >
-          {/* Category Accent */}
-          <div className="absolute inset-x-0 top-0 h-1 rounded-t-3xl bg-linear-to-r from-blue-500 to-purple-500 opacity-70" />
+          {/* Category Accent Line */}
+          <div
+            className="absolute inset-x-0 top-0 h-1 rounded-t-3xl opacity-80"
+            style={{
+              background:
+                "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+            }}
+          />
 
           {/* Category Title */}
-          <h3 className="mb-6 text-sm font-semibold uppercase tracking-wide text-slate-600 dark:text-slate-400">
+          <h3
+            className="mb-6 text-xs md:text-sm font-semibold uppercase tracking-wider"
+            style={{
+              color: "rgb(var(--text-secondary))",
+            }}
+          >
             {category}
           </h3>
 
@@ -70,7 +75,7 @@ const SkillsSection = ({ skills }) => {
             variants={{
               hidden: {},
               visible: {
-                transition: { staggerChildren: 0.05 },
+                transition: { staggerChildren: 0.06 },
               },
             }}
             className="space-y-4"
@@ -79,23 +84,20 @@ const SkillsSection = ({ skills }) => {
               <motion.div
                 key={skill._id}
                 variants={{
-                  hidden: { opacity: 0, scale: 0.95 },
+                  hidden: { opacity: 0, scale: 0.96 },
                   visible: {
                     opacity: 1,
                     scale: 1,
                     transition: { duration: 0.25 },
                   },
                 }}
-                whileHover={{ scale: 1.03 }}
-                className="
-                  rounded-xl
-                  border border-slate-200 dark:border-slate-800
-                  bg-slate-50 dark:bg-slate-900
-                  px-3 py-2
-                  transition
-                "
+                whileHover={{ scale: 1.02 }}
+                className="rounded-xl px-4 py-3 transition-all duration-300"
+                style={{
+                  backgroundColor: "rgba(var(--bg-primary),0.6)",
+                  border: "1px solid rgb(var(--border-color))",
+                }}
               >
-                {/* Smaller SkillBar */}
                 <SkillBar skill={skill} compact />
               </motion.div>
             ))}

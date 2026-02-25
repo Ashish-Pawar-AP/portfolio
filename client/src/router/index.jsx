@@ -17,6 +17,7 @@ import BlogDetails from "../pages/public/BlogDetails";
 import BlogsAdmin from "../pages/admin/BlogsAdmin";
 import NotFound from "../pages/public/NotFound";
 import ResumeAdmin from "../pages/admin/ResumeAdmin";
+import ProtectedRoute from "./ProtectedRoute";
 
 export const router = createBrowserRouter([
   {
@@ -38,16 +39,21 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path: "/admin",
-    element: <AdminLayout />,
+    element: <ProtectedRoute />,
     children: [
-      { path: "dashboard", element: <Dashboard /> },
-      { path: "projects", element: <ProjectsAdmin /> },
-      { path: "skills", element: <SkillsAdmin /> },
-      { path: "profile", element: <ProfileAdmin /> },
-      { path: "messages", element: <MessagesAdmin /> },
-      { path: "blogs", element: <BlogsAdmin /> },
-      { path: "resume", element: <ResumeAdmin /> },
+      {
+        path: "/admin",
+        element: <AdminLayout />,
+        children: [
+          { path: "dashboard", element: <Dashboard /> },
+          { path: "projects", element: <ProjectsAdmin /> },
+          { path: "skills", element: <SkillsAdmin /> },
+          { path: "profile", element: <ProfileAdmin /> },
+          { path: "messages", element: <MessagesAdmin /> },
+          { path: "blogs", element: <BlogsAdmin /> },
+          { path: "resume", element: <ResumeAdmin /> },
+        ],
+      },
     ],
   },
 ]);

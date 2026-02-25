@@ -1,182 +1,201 @@
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { Menu, X, Sun, Moon } from "lucide-react";
+import { useTheme } from "../../context/ThemeContext";
 
-/* Navbar links (public) */
+/* ===================== LINKS ===================== */
 const NAV_LINKS = [
   { name: "Home", path: "/" },
   { name: "About", path: "/about" },
-  { name: "Contact", path: "/contact" },
   { name: "Projects", path: "/projects" },
   { name: "Blog", path: "/blog" },
+  { name: "Contact", path: "/contact" },
   { name: "Admin", path: "/login" },
 ];
 
-/* Animations */
-const sidebarVariants = {
-  hidden: { x: "100%" },
-  visible: {
-    x: 0,
-    transition: { type: "spring", stiffness: 260, damping: 30 },
-  },
-  exit: {
-    x: "100%",
-    transition: { duration: 0.3 },
-  },
-};
-
-const linkVariants = {
-  hidden: { opacity: 0, x: 20 },
-  visible: (i) => ({
-    opacity: 1,
-    x: 0,
-    transition: { delay: i * 0.08 },
-  }),
-};
-
+/* ===================== NAVBAR ===================== */
 const Navbar = () => {
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      {/* NAVBAR */}
-      <motion.nav
+      {/* ================= FLOATING NAVBAR ================= */}
+      <motion.header
         initial={{ y: -30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="
-          sticky top-0 z-50
-          border-b border-slate-200 dark:border-slate-800
-          bg-white/70 dark:bg-slate-900/70
-          backdrop-blur-md
-        "
+        className="fixed top-4 left-1/2 z-50 w-[94%] max-w-6xl -translate-x-1/2 rounded-2xl backdrop-blur-2xl shadow-xl transition-all duration-500"
+        style={{
+          backgroundColor: "rgba(var(--bg-secondary),0.7)",
+          border: "1px solid rgb(var(--border-color))",
+        }}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-4">
+        <div className="flex items-center justify-between px-6 py-3">
           {/* Logo */}
-          <Link to="/" className="text-xl font-bold">
-            <span className="bg-linear-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
+          <Link to="/" className="text-lg font-bold tracking-tight">
+            <span
+              className="bg-clip-text text-transparent"
+              style={{
+                backgroundImage:
+                  "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+              }}
+            >
               Ashish.dev
             </span>
           </Link>
 
-          {/* Center Links */}
-          <div className="hidden md:flex gap-8 text-sm font-medium">
+          {/* Desktop Links */}
+          <nav className="relative hidden md:flex items-center gap-8 text-sm font-medium">
             {NAV_LINKS.map((link) => {
               const isActive = location.pathname === link.path;
+
               return (
                 <NavLink
                   key={link.path}
                   to={link.path}
-                  className={`relative ${
-                    isActive
-                      ? "text-blue-600"
-                      : "text-slate-700 dark:text-slate-300 hover:text-blue-600"
-                  }`}
+                  className="relative transition-colors duration-300"
+                  style={{
+                    color: isActive
+                      ? "rgb(var(--accent-primary))"
+                      : "rgb(var(--text-secondary))",
+                  }}
                 >
                   {link.name}
+
                   {isActive && (
                     <motion.span
-                      layoutId="navbar-underline"
-                      className="absolute left-0 -bottom-1 h-0.5 w-full bg-blue-600"
+                      layoutId="nav-indicator"
+                      className="absolute -bottom-2 left-0 h-0.5 w-full rounded-full"
+                      style={{
+                        background:
+                          "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+                      }}
                     />
                   )}
                 </NavLink>
               );
             })}
+          </nav>
+
+          {/* Right Controls */}
+          <div className="flex items-center gap-3">
+            {/* Theme Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="rounded-lg p-2 transition-all duration-300 hover:scale-105"
+              style={{
+                backgroundColor: "rgba(var(--bg-primary),0.6)",
+                color: "rgb(var(--text-primary))",
+                border: "1px solid rgb(var(--border-color))",
+              }}
+              aria-label="Toggle Theme"
+            >
+              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+
+            {/* Mobile Hamburger */}
+            <button
+              onClick={() => setOpen(true)}
+              className="md:hidden rounded-lg p-2 transition-all duration-300 hover:scale-105"
+              style={{
+                backgroundColor: "rgba(var(--bg-primary),0.6)",
+                border: "1px solid rgb(var(--border-color))",
+              }}
+              aria-label="Open Menu"
+            >
+              <Menu size={20} />
+            </button>
           </div>
-
-          {/* Animated Hamburger */}
-          <button
-            onClick={() => setOpen(!open)}
-            className="relative h-8 w-8 md:hidden"
-            aria-label="Toggle Menu"
-          >
-            <motion.span
-              animate={open ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
-              className="absolute left-0 top-2 h-0.5 w-8 bg-slate-800 dark:bg-white"
-            />
-            <motion.span
-              animate={open ? { opacity: 0 } : { opacity: 1 }}
-              className="absolute left-0 top-4 h-0.5 w-8 bg-slate-800 dark:bg-white"
-            />
-            <motion.span
-              animate={open ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
-              className="absolute left-0 top-6 h-0.5 w-8 bg-slate-800 dark:bg-white"
-            />
-          </button>
         </div>
-      </motion.nav>
+      </motion.header>
 
-      {/* SIDEBAR */}
+      {/* ================= MOBILE OVERLAY ================= */}
       <AnimatePresence>
         {open && (
           <>
-            {/* Overlay */}
+            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setOpen(false)}
-              className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+              className="fixed inset-0 z-40 backdrop-blur-sm"
+              style={{
+                backgroundColor: "rgba(0,0,0,0.4)",
+              }}
             />
 
-            {/* MOBILE SIDEBAR */}
-            <AnimatePresence>
-              {open && (
-                <>
-                  {/* Overlay */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    onClick={() => setOpen(false)}
-                    className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
-                  />
+            {/* Mobile Panel */}
+            <motion.aside
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 260, damping: 28 }}
+              className="fixed right-4 top-4 z-50 w-72 rounded-2xl p-6 shadow-2xl backdrop-blur-2xl"
+              style={{
+                backgroundColor: "rgba(var(--bg-secondary),0.9)",
+                border: "1px solid rgb(var(--border-color))",
+              }}
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between mb-8">
+                <span className="font-semibold text-[rgb(var(--text-primary))]">
+                  Menu
+                </span>
+                <button onClick={() => setOpen(false)}>
+                  <X />
+                </button>
+              </div>
 
-                  {/* Sidebar */}
-                  <motion.aside
-                    variants={sidebarVariants}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="
-                fixed right-0 top-0 z-50 h-full w-50% sm:w-80
-                bg-white dark:bg-slate-900
-                border-l border-slate-200 dark:border-slate-800
-                p-8 md:hidden
-              "
+              {/* Links */}
+              <nav className="space-y-5 text-base font-medium">
+                {NAV_LINKS.map((link) => (
+                  <NavLink
+                    key={link.path}
+                    to={link.path}
+                    onClick={() => setOpen(false)}
+                    className="block transition-colors duration-300"
+                    style={({ isActive }) => ({
+                      color: isActive
+                        ? "rgb(var(--accent-primary))"
+                        : "rgb(var(--text-secondary))",
+                    })}
                   >
-                    <nav className="mt-16 space-y-6 text-lg font-medium">
-                      {NAV_LINKS.map((link, i) => (
-                        <motion.div
-                          key={link.path}
-                          custom={i}
-                          variants={linkVariants}
-                          initial="hidden"
-                          animate="visible"
-                        >
-                          <NavLink
-                            to={link.path}
-                            onClick={() => setOpen(false)}
-                            className={({ isActive }) =>
-                              isActive
-                                ? "block text-blue-600"
-                                : "block text-slate-700 dark:text-slate-300 hover:text-blue-600"
-                            }
-                          >
-                            {link.name}
-                          </NavLink>
-                        </motion.div>
-                      ))}
-                    </nav>
-                  </motion.aside>
-                </>
-              )}
-            </AnimatePresence>
+                    {link.name}
+                  </NavLink>
+                ))}
+              </nav>
+
+              {/* Divider */}
+              <div
+                className="my-6 h-px"
+                style={{
+                  backgroundColor: "rgb(var(--border-color))",
+                }}
+              />
+
+              {/* Theme Toggle (Mobile) */}
+              <button
+                onClick={toggleTheme}
+                className="flex w-full items-center justify-center gap-2 rounded-xl py-2 transition-all duration-300 hover:scale-105"
+                style={{
+                  backgroundColor: "rgba(var(--bg-primary),0.7)",
+                  border: "1px solid rgb(var(--border-color))",
+                }}
+              >
+                {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+                <span className="text-sm">Toggle Theme</span>
+              </button>
+            </motion.aside>
           </>
         )}
       </AnimatePresence>
+
+      {/* Spacer */}
+      <div className="h-24" />
     </>
   );
 };

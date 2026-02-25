@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import api from "../../utils/axios";
 
 /**
- * Admin Profile Editor (Advanced UI + Animations)
+ * Admin Profile Editor (Theme-Based + Premium UI)
  */
 const ProfileAdmin = () => {
   const { data: profile, isLoading } = useQuery({
@@ -25,7 +25,11 @@ const ProfileAdmin = () => {
   };
 
   if (isLoading) {
-    return <div className="text-slate-400">Loading profile...</div>;
+    return (
+      <div style={{ color: "rgb(var(--text-secondary))" }}>
+        Loading profile...
+      </div>
+    );
   }
 
   return (
@@ -33,22 +37,25 @@ const ProfileAdmin = () => {
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="
-        max-w-2xl
-        rounded-3xl
-        border border-slate-200 dark:border-slate-800
-        bg-white/70 dark:bg-slate-900/60
-        backdrop-blur
-        p-8
-        shadow-xl
-      "
+      className="max-w-2xl rounded-3xl p-8 backdrop-blur-2xl shadow-xl"
+      style={{
+        backgroundColor: "rgba(var(--bg-secondary),0.7)",
+        border: "1px solid rgb(var(--border-color))",
+      }}
     >
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">
+        <h1
+          className="text-3xl font-bold tracking-tight"
+          style={{ color: "rgb(var(--text-primary))" }}
+        >
           Edit Profile
         </h1>
-        <p className="mt-1 text-slate-500 dark:text-slate-400">
+
+        <p
+          className="mt-1"
+          style={{ color: "rgb(var(--text-secondary))" }}
+        >
           Update your public portfolio information
         </p>
       </div>
@@ -74,21 +81,22 @@ const ProfileAdmin = () => {
           }}
           className="space-y-2"
         >
-          <label className="text-sm font-medium text-slate-600 dark:text-slate-300">
+          <label
+            className="text-sm font-medium"
+            style={{ color: "rgb(var(--text-secondary))" }}
+          >
             Full Name
           </label>
+
           <input
             name="fullName"
             defaultValue={profile?.fullName}
-            className="
-              w-full rounded-xl
-              border border-slate-300 dark:border-slate-700
-              bg-white dark:bg-slate-950
-              px-4 py-3
-              text-slate-900 dark:text-white
-              outline-none
-              focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20
-            "
+            className="w-full rounded-xl px-4 py-3 outline-none transition-all duration-300"
+            style={{
+              backgroundColor: "rgba(var(--bg-secondary),0.9)",
+              border: "1px solid rgb(var(--border-color))",
+              color: "rgb(var(--text-primary))",
+            }}
           />
         </motion.div>
 
@@ -100,21 +108,22 @@ const ProfileAdmin = () => {
           }}
           className="space-y-2"
         >
-          <label className="text-sm font-medium text-slate-600 dark:text-slate-300">
+          <label
+            className="text-sm font-medium"
+            style={{ color: "rgb(var(--text-secondary))" }}
+          >
             Tagline
           </label>
+
           <input
             name="tagline"
             defaultValue={profile?.tagline}
-            className="
-              w-full rounded-xl
-              border border-slate-300 dark:border-slate-700
-              bg-white dark:bg-slate-950
-              px-4 py-3
-              text-slate-900 dark:text-white
-              outline-none
-              focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20
-            "
+            className="w-full rounded-xl px-4 py-3 outline-none transition-all duration-300"
+            style={{
+              backgroundColor: "rgba(var(--bg-secondary),0.9)",
+              border: "1px solid rgb(var(--border-color))",
+              color: "rgb(var(--text-primary))",
+            }}
           />
         </motion.div>
 
@@ -126,23 +135,23 @@ const ProfileAdmin = () => {
           }}
           className="space-y-2"
         >
-          <label className="text-sm font-medium text-slate-600 dark:text-slate-300">
+          <label
+            className="text-sm font-medium"
+            style={{ color: "rgb(var(--text-secondary))" }}
+          >
             Bio
           </label>
+
           <textarea
             name="bio"
             rows={5}
             defaultValue={profile?.bio}
-            className="
-              w-full rounded-xl
-              border border-slate-300 dark:border-slate-700
-              bg-white dark:bg-slate-950
-              px-4 py-3
-              text-slate-900 dark:text-white
-              outline-none
-              resize-none
-              focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20
-            "
+            className="w-full rounded-xl px-4 py-3 outline-none resize-none transition-all duration-300"
+            style={{
+              backgroundColor: "rgba(var(--bg-secondary),0.9)",
+              border: "1px solid rgb(var(--border-color))",
+              color: "rgb(var(--text-primary))",
+            }}
           />
         </motion.div>
 
@@ -157,12 +166,11 @@ const ProfileAdmin = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.96 }}
-            className="
-              rounded-xl px-8 py-3
-              bg-linear-to-r from-blue-600 to-purple-600
-              font-medium text-white
-              shadow-lg shadow-blue-500/30
-            "
+            className="rounded-xl px-8 py-3 font-medium text-white shadow-lg transition-all duration-300"
+            style={{
+              background:
+                "linear-gradient(to right, rgb(var(--accent-primary)), rgb(var(--accent-secondary)))",
+            }}
           >
             Save Changes
           </motion.button>

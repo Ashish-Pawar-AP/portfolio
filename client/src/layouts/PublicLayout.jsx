@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
-import { Analytics } from "@vercel/analytics/next";
+import { Analytics } from "@vercel/analytics/react";
 
 const PublicLayout = () => {
   return (

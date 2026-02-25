@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import { motion } from "framer-motion";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
+import { Analytics } from "@vercel/analytics/next";
 
 const PublicLayout = () => {
   return (
@@ -37,6 +38,7 @@ const PublicLayout = () => {
           transition={{ duration: 0.4 }}
         >
           <Outlet />
+          <Analytics />
         </motion.div>
       </main>
 

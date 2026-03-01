@@ -98,7 +98,7 @@ export const loginAdmin = asyncHandler(async (req, res) => {
 
   const options = {
     httpOnly: true,
-    secure: NODE_ENV === "production",
+    secure: env.nodeEnv === "production",
     sameSite: "lax",
     path: "/",
   };

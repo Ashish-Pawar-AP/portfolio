@@ -159,7 +159,7 @@ const About = () => {
               <motion.a
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.96 }}
-                href={profile.resumeUrl}
+                href="/Ashish_CV.pdf"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center justify-center rounded-xl px-10 py-4 font-medium text-white shadow-lg transition-all duration-300"
